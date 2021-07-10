@@ -1,17 +1,39 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header/>
+    <Body
+      :pokemons="pokemons"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header.vue'
+import Body from './components/Body.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Header,
+    Body
+  },
+  data() {
+    return {
+      pokemons: [],
+      page:1
+    }
+  },
+  methods: {
+    //
+  },
+  mounted() {
+    fetch('https://pokeapi.co/api/v2/pokemon?limit=18&offset=0',{
+      method: 'get'
+    }).then((response)=> {
+      return response.json();
+    }).then((data) => {
+      this.pokemons = data.results;
+    })
   }
 }
 </script>
@@ -21,8 +43,8 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+}
+body {
+  background: url('./assets/pokepattern.jpg');
 }
 </style>
