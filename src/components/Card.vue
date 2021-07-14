@@ -1,8 +1,8 @@
 <template>
     <b-card
-        :title="pokemon.name"
+        :title="name"
         :img-src="image"
-        :img-alt="pokemon.name"
+        :img-alt="name"
         img-top
         align="center"
         @click="showData"
@@ -34,28 +34,57 @@ export default {
     name: 'Card',
     props:{
         pokemon: Object,
-        setModalData: Function
+        setModalData: Function,
+        setResults: Function
     },
     data() {
         return {
-            pokemonData : Object
+            pokemonData : Object,
+            pokemonSpecies: Object
         }
     },
     methods: {
         showData() {
             //set data to modal
-            let mainType = this.pokemonData.types.shift();
+            let mainType = [...this.pokemonData.types].shift();
             let modalData = {
                 id : this.pokemonId,
                 name: this.pokemonData.name,
                 height: (this.pokemonData.height / 10).toString() + 'm',
                 weight: (this.pokemonData.weight / 10).toString() + 'kg',
                 image: this.image,
-                type: mainType.type.name
+                type: mainType.type.name,
+                stats: this.pokemonData.stats,
+                description:this.pokemonSpecies.flavor_text_entries[0].flavor_text
             }
             this.setModalData(modalData)
-            //open a popup
             this.$bvModal.show('modal');
+        },
+        getPokemonData() {
+            this.setResults(true)
+            fetch(this.pokemon.url,{
+                method: 'get'
+            }).then((response)=> {
+                if (response.ok) return response.json();
+                return response.ok
+            }).then((data) => {
+                if(data) {
+                    this.pokemonData = data;
+                    fetch(data.species.url, {
+                        method:'get'
+                    }).then((response) => {
+                        return response.json();
+                    }).then((data) => {
+                        this.pokemonSpecies = data
+                    })
+                }
+                else {
+                    //to hide cards and show alert
+                    this.setResults(false)
+                }
+            }).catch(err => {
+                console.log(err)
+            })
         }
     },
     computed: {
@@ -74,16 +103,18 @@ export default {
                 return this.pokemonData.sprites.front_default
             }
             return require('../assets/spinner.gif');
+        },
+        name() {
+            return this.pokemon.name.length ? this.pokemon.name : this.pokemonData.name
         }
     },
-    mounted() {
-        fetch(this.pokemon.url,{
-            method: 'get'
-            }).then((response)=> {
-                return response.json();
-            }).then((data) => {
-                this.pokemonData = data;
-        })
+    watch: {
+        pokemon: {
+            handler() {
+                this.getPokemonData()
+            },
+            immediate: true
+        }
     }
 }
 </script>
