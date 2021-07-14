@@ -246,6 +246,7 @@ export default {
         closeModal() {
             this.$refs['pokemon-modal'].hide()
             this.chart.destroy()
+            this.chartView =  false
         }
     }
 };
