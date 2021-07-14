@@ -107,11 +107,16 @@ export default {
 body {
   background: url('./assets/pokepattern.jpg');
 }
+.modal-open .modal-backdrop {
+  opacity: 0.75;
+  background: rgb(197,242,181);
+  background: linear-gradient(90deg, rgba(197,242,181,1) 0%, rgba(110,204,200,1) 100%);
+}
 
 /*pagination*/
 .pagination .page-item.active .page-link {
-  background: rgb(0,255,152);
-  background: linear-gradient(90deg, rgba(0,255,152,1) 0%, rgba(1,236,215,1) 98%);
+  background: rgb(197,242,181);
+  background: linear-gradient(90deg, rgba(197,242,181,1) 0%, rgba(110,204,200,1) 100%);
   border: 1px solid rgba(0,0,0,0.1);
   border-color: none;
 }

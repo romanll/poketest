@@ -9,7 +9,7 @@
             <b-row id="search-bar">
                 <b-col sm="8" offset="2">
                     <b-form-input
-                        placeholder="Search by keywords"
+                        placeholder="Search by keywords..."
                         v-model="keyword"
                         v-on:keyup="local"
                         v-on:keyup.enter="search"

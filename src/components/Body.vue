@@ -4,7 +4,7 @@
             <div v-show="noResults" id="no-results">
                 <b-row>
                     <b-col cols="6" offset="3">
-                        <b-alert show variant="warning">There are no results for your search</b-alert>
+                        <b-alert dismissible show variant="warning">There are no results for your search</b-alert>
                     </b-col>
                 </b-row>
             </div>
